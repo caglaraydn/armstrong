@@ -1,0 +1,45 @@
+#include "armstrong_numbers.h"
+int power(int base,int exponent){
+    int product = 1;
+    int i = 0;
+
+    for(i=0; i < exponent; i++){
+        product = product*base;
+    }
+
+    return product;
+}
+
+int countDigits(int number){
+    int x = 1;
+
+    while(number >= 10){
+        number = number/10;
+        x++;
+               
+    }
+
+    return x;
+}
+int findSum(int candidate){
+    const int digits = countDigits(candidate);
+    int sum = 0;
+    while(candidate > 0){
+        int lastDigit = candidate % 10;
+        sum = sum + power(lastDigit, digits);
+        candidate = candidate / 10;
+    }
+return sum;
+}
+bool is_armstrong_number(int candidate){
+    
+    int sum = findSum(candidate);
+
+    if(sum == candidate){
+        return 1;
+    }
+    
+        return 0;
+    
+
+}
