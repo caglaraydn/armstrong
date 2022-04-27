@@ -1,0 +1,191 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+int main(void)
+{
+    char usernames[10][12] = { "0","0","0","0","0","0","0","0","0","0" };
+    char passwords[10][99] = { "0","0","0","0","0","0","0","0","0","0" };
+    char votetype[10][1] = { "0","0","0","0","0","0","0","0","0","0" }; // 1 yes, 2 no, 3 abstain
+    int Vote, yes = 0, no = 0, abstain = 0, VoteCount = 0;
+    int userCounter = 0;
+    char inputUsername[12];
+    char inputPassword[99];
+
+    int numberOfVoters = 0, currentVoters = 0, choice;
+
+    printf("Please enter number of voters 1-10:");
+    scanf("%d", &numberOfVoters);
+    if (numberOfVoters > 0 && numberOfVoters < 11) {
+
+    jump:
+        printf("1. Sign in \n");
+        printf("2. Sign up \n");
+        printf("3. Print users and information \n");
+        printf("4. Voting score \n");
+        printf("5. Exit \n");
+        printf("Please select a choice:");
+        scanf("%d", &choice);
+
+        while (choice != 5)
+        {
+            if (choice == 1)
+            {
+                char currentUsername;
+                char currentPassword;
+                int currentVote;
+
+                while (userCounter < numberOfVoters + 1) {
+
+                printf("Enter your username: ");
+                scanf("%s", inputUsername);
+
+                printf("Enter your password: ");
+                scanf("%s", inputPassword);
+
+                for (int j = 0; j < numberOfVoters; j++) {
+                    if (strcmp(usernames[j], inputUsername) == 0 && strcmp(passwords[j], inputPassword) == 0) // && ile password'u de kontrol etmelisin
+                    {
+                        printf("Please Vote!\n");
+                        printf("1. Yes\n");
+                        printf("2. No\n");
+                        printf("3. Abstain\n");
+                        // With this particular line of code, we ask a vote from the user.
+                        scanf("%d", &Vote);
+
+                        if (Vote == 1 || Vote == 2 || Vote == 3 ) {
+                            switch (Vote) {
+                            case 1:
+                                if (strcmp(votetype[j], "2") == 0) {
+                                    no = no - 1;
+                                    printf("Yes vote saved!\n");
+                                    yes++;
+                                    strcpy(votetype[j], "1");
+                                    break;
+                                }
+                                else if (strcmp(votetype[j], "3") == 0) {
+                                    abstain = abstain - 1;
+                                    printf("Yes vote saved!\n");
+                                    yes++;
+                                    strcpy(votetype[j], "1");
+                                    break;
+                                }
+                                else {
+                                    printf("Yes vote saved!\n");
+                                    yes++;
+                                    VoteCount++;
+                                    strcpy(votetype[j], "1");
+                                    break;
+                                }
+                                
+                            case 2:
+                                if (strcmp(votetype[j], "1") == 0) {
+                                    yes = yes - 1;
+                                    printf("No vote saved!\n");
+                                    no++;
+                                    strcpy(votetype[j], "2");
+                                    break;
+                                }
+                                else if (strcmp(votetype[j], "3") == 0) {
+                                    abstain = abstain - 1;
+                                    printf("No vote saved!\n");
+                                    no++;
+                                    strcpy(votetype[j], "2");
+                                    break;
+                                }
+                                else {
+                                    printf("No vote saved!\n");
+                                    no++;
+                                    VoteCount++;
+                                    strcpy(votetype[j], "2");
+                                    break;
+                                }
+
+                            case 3:
+                                if (strcmp(votetype[j], "1") == 0) {
+                                    yes = yes - 1;
+                                    printf("Abstain vote saved!\n");
+                                    abstain++;
+                                    strcpy(votetype[j], "3");
+                                    break;
+                                }
+                                else if (strcmp(votetype[j], "2") == 0) {
+                                    no = no - 1;
+                                    printf("Abstain vote saved!\n");
+                                    abstain++;
+                                    strcpy(votetype[j], "3");
+                                    break;
+                                }
+                                else {
+                                    printf("Abstain vote saved!\n");
+                                    abstain++;
+                                    VoteCount++;
+                                    strcpy(votetype[j], "3");
+                                    break;
+                                }
+                            }
+                        }
+                        goto jump;
+                    }
+                    else
+                    {
+                        printf("No users found!! \n");
+                        goto jump;
+                    }
+                }
+                }
+
+                // sadece oyları sayma işlemini yapabilirsin. for döngüsü ile çektik zateb verileri istediğin gibi düzeltirsin.
+
+            }
+            else if (choice == 2)
+            {
+                char currentUsername[12];
+                char currentPassword[99];
+                int currentVote;
+
+                for (int x = 0; x < numberOfVoters; x++) {
+                    printf("Please enter a new username: ");
+                    scanf("%s", &currentUsername);
+                    strcpy(usernames[userCounter], currentUsername);
+
+                    printf("Please enter a new password: ");
+                    scanf("%s", &currentPassword);
+                    strcpy(passwords[userCounter], currentPassword);
+
+                    printf("User saved. Please sign in. \n");
+
+                    userCounter++;
+                    goto jump;
+                }
+            }
+            else if (choice == 3)
+            {
+
+            }
+            else if (choice == 4)
+            {
+            printf("Yes votes: %d \n", yes);
+            printf("No votes: %d \n", no);
+            printf("Abstain votes: %d \n", abstain);
+            printf("Total votes: %d \n", VoteCount);
+            break;
+                
+            }
+            
+            else if (choice == 5) {
+
+            }
+            else {
+                printf("Please select a choice between 1-5:");
+            }
+
+        }
+        if (choice != 5) {
+            goto jump;
+        }
+
+    }
+}
